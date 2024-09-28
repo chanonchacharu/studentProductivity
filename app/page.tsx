@@ -1,7 +1,5 @@
+import Homepage from "./dashboard/homepage/page";
+
 export default function Home() {
-  return (
-    <main>
-      <h1>Homepage</h1>
-    </main>
-  );
+  return <Homepage />;
 }
