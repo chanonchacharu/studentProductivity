@@ -1,31 +1,42 @@
+"use client";
+
 import React, { useEffect, useRef } from "react";
 import * as blazeface from "@tensorflow-models/blazeface";
 import * as tf from "@tensorflow/tfjs";
+import "@tensorflow/tfjs-backend-webgl";
 
-const FaceDetection = () => {
+const FaceDetection = ({ onFocusChange }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Function to set up webcam
+  // Set up TensorFlow.js backend (WebGL)
+  const setupBackend = async () => {
+    await tf.setBackend("webgl");
+    await tf.ready();
+  };
+
+  // Set up the webcam stream
   const setupWebcam = async () => {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-      });
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        videoRef.current.addEventListener("loadedmetadata", () => {
+          videoRef.current.play();
+        });
       }
+    } catch (error) {
+      console.error("Error accessing the webcam:", error);
     }
   };
 
-  // Function to run face detection using Blazeface
+  // Run face detection using BlazeFace
   const runFaceDetection = async () => {
     const video = videoRef.current;
     if (video && video.readyState === 4) {
       const model = await blazeface.load();
 
-      // Pass the video element to get face predictions
+      // Get face predictions from the video element
       const predictions = await model.estimateFaces(video, false);
 
       const canvas = canvasRef.current;
@@ -36,7 +47,9 @@ const FaceDetection = () => {
       }
 
       if (predictions.length > 0) {
-        // Draw detected face box and log the coordinates
+        onFocusChange(true); // Notify that focus is detected
+
+        // Draw a box around each detected face
         predictions.forEach((prediction) => {
           const start = prediction.topLeft as [number, number];
           const end = prediction.bottomRight as [number, number];
@@ -55,13 +68,19 @@ const FaceDetection = () => {
           console.log("User is detected, face position:", start, end);
         });
       } else {
+        onFocusChange(false); // Notify that no face is detected
         console.log("No face detected, user may not be focused.");
       }
     }
   };
 
+  // Set up the webcam and TensorFlow backend on mount
   useEffect(() => {
-    setupWebcam();
+    const initialize = async () => {
+      await setupBackend();
+      await setupWebcam();
+    };
+    initialize();
 
     const interval = setInterval(() => {
       runFaceDetection();
@@ -71,15 +90,19 @@ const FaceDetection = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Focus Monitoring with Face Detection</h1>
+    <div style={{ position: "relative", width: "640px", height: "480px" }}>
       <video
         ref={videoRef}
         width="640"
         height="480"
-        style={{ display: "none" }} // Hide the video element
+        style={{ position: "absolute", top: 0, left: 0 }}
       />
-      <canvas ref={canvasRef} width="640" height="480"></canvas>
+      <canvas
+        ref={canvasRef}
+        width="640"
+        height="480"
+        style={{ position: "absolute", top: 0, left: 0 }}
+      />
     </div>
   );
 };

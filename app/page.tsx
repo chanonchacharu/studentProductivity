@@ -1,5 +1,11 @@
+"use client";
+
 import Homepage from "./dashboard/homepage/page";
 
 export default function Home() {
-  return <Homepage />;
+  return (
+    <div>
+      <Homepage />;
+    </div>
+  );
 }
