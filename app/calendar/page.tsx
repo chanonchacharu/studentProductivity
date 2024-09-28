@@ -6,6 +6,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { v4 as uuidv4 } from "uuid";
+import Link from "next/link";
 
 const classesData = [
   {
@@ -237,6 +238,22 @@ export default function CalendarPage() {
 
   return (
     <div className="calendar-page p-8 bg-white min-h-screen">
+    <nav className="bg-gray-800 text-white py-4">
+        <div className="container mx-auto flex justify-between items-center">
+            {/* Links */}
+            <div className="space-x-6">
+            <Link href="/dashboard">
+                <span className="hover:text-gray-300 cursor-pointer">Home</span>
+            </Link>
+            <Link href="/calendar">
+                <span className="hover:text-gray-300 cursor-pointer">Calendar</span>
+            </Link>
+            <Link href="/pomodoropage">
+                <span className="hover:text-gray-300 cursor-pointer">Pomodoro</span>
+            </Link>
+            </div>
+        </div>
+    </nav>
       <h1 className="text-center text-4xl font-bold mb-10 text-cyan-900">
         School Calendar
       </h1>

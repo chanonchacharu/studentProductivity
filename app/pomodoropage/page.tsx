@@ -1,143 +1,283 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import FaceDetection from "@/app/components/faceDetection";
+import Link from "next/link";
 
 const assignmentsData = [
-    {
-      id: 1,
-      title: "AI Quiz",
-      date: "2024-10-03",
-      subject: "Introduction to AI",
-      questions: [
-        { id: 1, question: "What is Artificial Intelligence?", completed: false },
-        { id: 2, question: "Explain the difference between narrow AI and general AI.", completed: false },
-        { id: 3, question: "What are the ethical concerns related to AI?", completed: false },
-      ],
-    },
-    {
-      id: 2,
-      title: "Machine Learning Project Due",
-      date: "2024-11-05",
-      subject: "Machine Learning Basics",
-      questions: [
-        { id: 1, question: "What are the different types of machine learning?", completed: false },
-        { id: 2, question: "Explain supervised learning with an example.", completed: false },
-        { id: 3, question: "What are common performance metrics for machine learning models?", completed: false },
-      ],
-    },
-    {
-      id: 3,
-      title: "Deep Learning Assignment",
-      date: "2024-11-10",
-      subject: "Deep Learning Fundamentals",
-      questions: [
-        { id: 1, question: "What is a neural network?", completed: false },
-        { id: 2, question: "Explain the concept of backpropagation.", completed: false },
-        { id: 3, question: "How do convolutional neural networks (CNNs) work?", completed: false },
-      ],
-    },
-    {
-      id: 4,
-      title: "Neural Networks Midterm",
-      date: "2024-11-15",
-      subject: "Neural Networks",
-      questions: [
-        { id: 1, question: "What is a perceptron, and how does it function?", completed: false },
-        { id: 2, question: "Explain how multi-layer perceptrons differ from simple perceptrons.", completed: false },
-        { id: 3, question: "What are activation functions, and why are they important?", completed: false },
-      ],
-    },
-    {
-      id: 5,
-      title: "NLP Project",
-      date: "2024-10-20",
-      subject: "Natural Language Processing",
-      questions: [
-        { id: 1, question: "What is tokenization in NLP?", completed: false },
-        { id: 2, question: "Explain the concept of word embeddings.", completed: false },
-        { id: 3, question: "How does a transformer model improve NLP tasks?", completed: false },
-      ],
-    },
-    {
-      id: 6,
-      title: "Computer Vision Final",
-      date: "2024-11-25",
-      subject: "Computer Vision",
-      questions: [
-        { id: 1, question: "What is the purpose of edge detection in computer vision?", completed: false },
-        { id: 2, question: "Explain how convolution is applied in image processing.", completed: false },
-        { id: 3, question: "What is image classification, and how does it work?", completed: false },
-      ],
-    },
-    {
-      id: 7,
-      title: "Advanced AI Exam",
-      date: "2024-10-01",
-      subject: "Advanced AI Topics",
-      questions: [
-        { id: 1, question: "What are the limitations of current AI technologies?", completed: false },
-        { id: 2, question: "Explain the concept of reinforcement learning.", completed: false },
-        { id: 3, question: "How does explainable AI improve the transparency of AI systems?", completed: false },
-      ],
-    },
-    {
-      id: 8,
-      title: "Reinforcement Learning Presentation",
-      date: "2024-10-05",
-      subject: "Reinforcement Learning",
-      questions: [
-        { id: 1, question: "What is the Markov decision process?", completed: false },
-        { id: 2, question: "Explain the difference between Q-learning and SARSA.", completed: false },
-        { id: 3, question: "What are some real-world applications of reinforcement learning?", completed: false },
-      ],
-    },
-    {
-      id: 9,
-      title: "AI Ethics Research Paper",
-      date: "2024-10-10",
-      subject: "AI Ethics",
-      questions: [
-        { id: 1, question: "What are the key ethical issues surrounding AI development?", completed: false },
-        { id: 2, question: "Discuss the potential for AI bias in decision-making systems.", completed: false },
-        { id: 3, question: "What are some frameworks for ethical AI development?", completed: false },
-      ],
-    },
-    {
-      id: 10,
-      title: "AI for Robotics Midterm",
-      date: "2024-10-12",
-      subject: "AI for Robotics",
-      questions: [
-        { id: 1, question: "What is the role of AI in modern robotics?", completed: false },
-        { id: 2, question: "Explain the use of path planning algorithms in robotics.", completed: false },
-        { id: 3, question: "How do robots use sensors and AI for navigation?", completed: false },
-      ],
-    },
-    {
-      id: 11,
-      title: "AI System Design Final Project",
-      date: "2024-10-20",
-      subject: "AI System Design",
-      questions: [
-        { id: 1, question: "What are the key components of an AI system architecture?", completed: false },
-        { id: 2, question: "Explain the role of data pipelines in AI system design.", completed: false },
-        { id: 3, question: "How do you ensure scalability in AI system design?", completed: false },
-      ],
-    },
-    {
-      id: 12,
-      title: "AI in Healthcare Final Report",
-      date: "2024-10-25",
-      subject: "AI in Healthcare",
-      questions: [
-        { id: 1, question: "What are some applications of AI in healthcare?", completed: false },
-        { id: 2, question: "How does AI improve diagnostic accuracy in healthcare?", completed: false },
-        { id: 3, question: "What are the challenges of implementing AI in healthcare systems?", completed: false },
-      ],
-    },
-  ];
-  
-  export default function PomodoroPage() {
+  {
+    id: 1,
+    title: "AI Quiz",
+    date: "2024-10-03",
+    subject: "Introduction to AI",
+    questions: [
+      { id: 1, question: "What is Artificial Intelligence?", completed: false },
+      {
+        id: 2,
+        question: "Explain the difference between narrow AI and general AI.",
+        completed: false,
+      },
+      {
+        id: 3,
+        question: "What are the ethical concerns related to AI?",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: "Machine Learning Project Due",
+    date: "2024-11-05",
+    subject: "Machine Learning Basics",
+    questions: [
+      {
+        id: 1,
+        question: "What are the different types of machine learning?",
+        completed: false,
+      },
+      {
+        id: 2,
+        question: "Explain supervised learning with an example.",
+        completed: false,
+      },
+      {
+        id: 3,
+        question:
+          "What are common performance metrics for machine learning models?",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "Deep Learning Assignment",
+    date: "2024-11-10",
+    subject: "Deep Learning Fundamentals",
+    questions: [
+      { id: 1, question: "What is a neural network?", completed: false },
+      {
+        id: 2,
+        question: "Explain the concept of backpropagation.",
+        completed: false,
+      },
+      {
+        id: 3,
+        question: "How do convolutional neural networks (CNNs) work?",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "Neural Networks Midterm",
+    date: "2024-11-15",
+    subject: "Neural Networks",
+    questions: [
+      {
+        id: 1,
+        question: "What is a perceptron, and how does it function?",
+        completed: false,
+      },
+      {
+        id: 2,
+        question:
+          "Explain how multi-layer perceptrons differ from simple perceptrons.",
+        completed: false,
+      },
+      {
+        id: 3,
+        question: "What are activation functions, and why are they important?",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: "NLP Project",
+    date: "2024-10-20",
+    subject: "Natural Language Processing",
+    questions: [
+      { id: 1, question: "What is tokenization in NLP?", completed: false },
+      {
+        id: 2,
+        question: "Explain the concept of word embeddings.",
+        completed: false,
+      },
+      {
+        id: 3,
+        question: "How does a transformer model improve NLP tasks?",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 6,
+    title: "Computer Vision Final",
+    date: "2024-11-25",
+    subject: "Computer Vision",
+    questions: [
+      {
+        id: 1,
+        question: "What is the purpose of edge detection in computer vision?",
+        completed: false,
+      },
+      {
+        id: 2,
+        question: "Explain how convolution is applied in image processing.",
+        completed: false,
+      },
+      {
+        id: 3,
+        question: "What is image classification, and how does it work?",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 7,
+    title: "Advanced AI Exam",
+    date: "2024-10-01",
+    subject: "Advanced AI Topics",
+    questions: [
+      {
+        id: 1,
+        question: "What are the limitations of current AI technologies?",
+        completed: false,
+      },
+      {
+        id: 2,
+        question: "Explain the concept of reinforcement learning.",
+        completed: false,
+      },
+      {
+        id: 3,
+        question:
+          "How does explainable AI improve the transparency of AI systems?",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 8,
+    title: "Reinforcement Learning Presentation",
+    date: "2024-10-05",
+    subject: "Reinforcement Learning",
+    questions: [
+      {
+        id: 1,
+        question: "What is the Markov decision process?",
+        completed: false,
+      },
+      {
+        id: 2,
+        question: "Explain the difference between Q-learning and SARSA.",
+        completed: false,
+      },
+      {
+        id: 3,
+        question:
+          "What are some real-world applications of reinforcement learning?",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 9,
+    title: "AI Ethics Research Paper",
+    date: "2024-10-10",
+    subject: "AI Ethics",
+    questions: [
+      {
+        id: 1,
+        question: "What are the key ethical issues surrounding AI development?",
+        completed: false,
+      },
+      {
+        id: 2,
+        question:
+          "Discuss the potential for AI bias in decision-making systems.",
+        completed: false,
+      },
+      {
+        id: 3,
+        question: "What are some frameworks for ethical AI development?",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 10,
+    title: "AI for Robotics Midterm",
+    date: "2024-10-12",
+    subject: "AI for Robotics",
+    questions: [
+      {
+        id: 1,
+        question: "What is the role of AI in modern robotics?",
+        completed: false,
+      },
+      {
+        id: 2,
+        question: "Explain the use of path planning algorithms in robotics.",
+        completed: false,
+      },
+      {
+        id: 3,
+        question: "How do robots use sensors and AI for navigation?",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 11,
+    title: "AI System Design Final Project",
+    date: "2024-10-20",
+    subject: "AI System Design",
+    questions: [
+      {
+        id: 1,
+        question: "What are the key components of an AI system architecture?",
+        completed: false,
+      },
+      {
+        id: 2,
+        question: "Explain the role of data pipelines in AI system design.",
+        completed: false,
+      },
+      {
+        id: 3,
+        question: "How do you ensure scalability in AI system design?",
+        completed: false,
+      },
+    ],
+  },
+  {
+    id: 12,
+    title: "AI in Healthcare Final Report",
+    date: "2024-10-25",
+    subject: "AI in Healthcare",
+    questions: [
+      {
+        id: 1,
+        question: "What are some applications of AI in healthcare?",
+        completed: false,
+      },
+      {
+        id: 2,
+        question: "How does AI improve diagnostic accuracy in healthcare?",
+        completed: false,
+      },
+      {
+        id: 3,
+        question:
+          "What are the challenges of implementing AI in healthcare systems?",
+        completed: false,
+      },
+    ],
+  },
+];
+
+export default function PomodoroPage() {
     const [time, setTime] = useState(25 * 60); // 25 minutes
     const [timerOn, setTimerOn] = useState(false);
     const [tasks, setTasks] = useState<any[]>([]); // Task list now stores assignment objects
@@ -145,7 +285,10 @@ const assignmentsData = [
     const [availableAssignments, setAvailableAssignments] = useState(assignmentsData); // Available assignment tasks
     const [showMoreAssignments, setShowMoreAssignments] = useState(false); // Toggle for showing more assignments
     const [showUpcomingTasks, setShowUpcomingTasks] = useState(true); // Toggle between Upcoming and Completed Tasks
+    const [isFocused, setIsFocused] = useState(true); // Track if user is focused
+    const [notFocusedDuration, setNotFocusedDuration] = useState(0); // Track time not focused
   
+    // Pomodoro Timer Logic
     useEffect(() => {
       let interval: NodeJS.Timeout | null = null;
   
@@ -167,6 +310,23 @@ const assignmentsData = [
         alert("All tasks are completed! Time to select new tasks.");
       }
     }, [timerOn, tasks]);
+  
+    // Face Detection Focus Logic
+    useEffect(() => {
+      if (!isFocused) {
+        const unfocusedInterval = setInterval(() => {
+          setNotFocusedDuration((prev) => prev + 1);
+        }, 1000);
+        if (notFocusedDuration >= 10) {
+          // Alert if not focused for 10 seconds
+          alert("You seem distracted! Please focus on your task.");
+          setNotFocusedDuration(0); // Reset the counter
+        }
+        return () => clearInterval(unfocusedInterval);
+      } else {
+        setNotFocusedDuration(0); // Reset if user is focused
+      }
+    }, [isFocused, notFocusedDuration]);
   
     const handleStart = () => setTimerOn(true);
     const handleStop = () => setTimerOn(false);
@@ -233,6 +393,23 @@ const assignmentsData = [
   
     return (
       <div className="pomodoro-container p-6 text-black text-center bg-cyan-900">
+        <nav className="bg-gray-800 text-white py-4">
+          <div className="container mx-auto flex justify-between items-center">
+            {/* Links */}
+            <div className="space-x-6">
+              <Link href="/dashboard">
+                <span className="hover:text-gray-300 cursor-pointer">Home</span>
+              </Link>
+              <Link href="/calendar">
+                <span className="hover:text-gray-300 cursor-pointer">Calendar</span>
+              </Link>
+              <Link href="/pomodoropage">
+                <span className="hover:text-gray-300 cursor-pointer">Pomodoro</span>
+              </Link>
+            </div>
+          </div>
+        </nav>
+  
         {/* Timer and tasks section */}
         <div className={`timer-tasks-container p-8 rounded-lg shadow-lg ${timerOn ? "bg-blue-100" : "bg-white"}`}>
           <h1 className="text-4xl font-bold mb-8">Pomofocus</h1>
@@ -265,14 +442,27 @@ const assignmentsData = [
             Reset
           </button>
   
-          {/* Always show the task list */}
+          {/* Centered FaceDetection Component */}
+          {timerOn && (
+            <div className="camera-container flex justify-center mt-8">
+              <FaceDetection onFocusChange={setIsFocused} />
+            </div>
+          )}
+  
+          {/* Task List */}
           <div className="tasks mt-12 mx-auto max-w-3xl">
             <h2 className="text-2xl font-semibold mb-4">Tasks</h2>
             <ul className="space-y-4">
               {tasks.map((task) => (
-                <li key={task.id} className={`relative p-4 rounded-lg shadow-lg ${timerOn ? "bg-yellow-200" : "bg-gray-100"}`}>
+                <li
+                  key={task.id}
+                  className={`relative p-4 rounded-lg shadow-lg ${timerOn ? "bg-yellow-200" : "bg-gray-100"}`}
+                >
                   <div>
-                    <h3 className="font-bold mb-2">{task.subject} - {task.title} <span className="ml-2 text-sm text-gray-500">({task.date})</span></h3>
+                    <h3 className="font-bold mb-2">
+                      {task.subject} - {task.title}{" "}
+                      <span className="ml-2 text-sm text-gray-500">({task.date})</span>
+                    </h3>
                     <ul className="space-y-1">
                       {task.questions.map((question) => (
                         <li key={question.id} className="flex items-center">
@@ -304,10 +494,9 @@ const assignmentsData = [
           </div>
         </div>
   
-       
+        {/* Task Toggling */}
         {!timerOn && (
           <div className="task-toggle-container mt-12 p-8 rounded-lg shadow-lg bg-white">
-           
             <div className="task-toggle-buttons mt-6">
               <button
                 onClick={() => setShowUpcomingTasks(true)}
